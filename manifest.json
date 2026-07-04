@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Semitexa Companion",
+  "version": "0.0.1",
+  "description": "Lets Semitexa OS embed external sites (with your real login) by removing frame-blocking headers for frames opened inside the OS.",
+  "permissions": ["declarativeNetRequest"],
+  "host_permissions": ["<all_urls>"],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "semitexa_frame_ruleset",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost/*",
+        "https://*.semitexa.test/*",
+        "https://*.semitexa.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}

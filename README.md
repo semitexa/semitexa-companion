@@ -23,21 +23,33 @@ browsing is unaffected.
 - `content.js` — sets `data-semitexa-companion` on the OS page so the OS knows
   the companion is active and hides the "install companion" hint.
 
-## Install (load unpacked)
+## Install
 
-1. Open `chrome://extensions` (or `edge://extensions`).
-2. Turn on **Developer mode** (top-right).
-3. Click **Load unpacked** and select this folder
-   (`packages/semitexa-companion`).
-4. Reload the Semitexa OS tab. Open a web-app (e.g. "open YouTube") — it now
+A Chromium (MV3) browser extension, not a Composer package: it is not on
+Packagist and not part of a Semitexa project. Load it unpacked from a clone of
+the repository:
+
+1. `git clone https://github.com/semitexa/semitexa-companion.git`
+2. Open `chrome://extensions` (or `edge://extensions`).
+3. Turn on **Developer mode** (top-right).
+4. Click **Load unpacked** and select the cloned `semitexa-companion` folder.
+5. Reload the Semitexa OS tab. Open a web-app (e.g. "open YouTube") — it now
    renders inside the OS window and the "install companion" hint is gone.
 
 ## Scope / domains
 
-The rules + content script are scoped to `localhost`, `*.semitexa.test`, and
-`*.semitexa.com`. If you run the OS on another host, add it to
-`condition.initiatorDomains` in `rules.json` and to `content_scripts.matches` in
-`manifest.json`, then reload the extension.
+As shipped:
+
+- the header rule (`rules.json`) applies to frames initiated by `localhost`,
+  `semitexa.test`, `semitexa.com` and their subdomains;
+- the content script (`manifest.json`) runs on `http://localhost/*`,
+  `https://*.semitexa.test/*` and `https://*.semitexa.com/*`.
+
+The default local URL `http://localhost:9502` is covered. A local domain created
+by the Semitexa installer is plain `http://<name>.test`, which is **not**
+covered: add the domain to `condition.initiatorDomains` in `rules.json` and
+`http://<name>.test/*` to `content_scripts.matches` in `manifest.json`, then
+reload the extension. Do the same for any other host you run the OS on.
 
 ## Security note
 
